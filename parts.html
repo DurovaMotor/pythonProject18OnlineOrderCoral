@@ -7,6 +7,7 @@
     <meta name="description" content="Toutes les pièces Coral.">
     <link rel="icon" href="./Database/MotorPictures/Coral.png?v=generated">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./assets/js/access-guard.js?v=20260522-ipgate"></script>
   </head>
   <body data-page="parts">
     <div class="site-backdrop" aria-hidden="true">
@@ -59,7 +60,29 @@
     </main>
 
     <div id="toast-root"></div>
-    <script src="./data/parts-data.js?v=generated"></script>
-    <script src="./assets/js/app.js?v=generated"></script>
+    <script>
+      (function () {
+        var sources = [
+          "./data/parts-data.js?v=generated",
+          "./assets/js/app.js?v=20260526-ipgate"
+        ];
+        function loadScript(src) {
+          return new Promise(function (resolve, reject) {
+            var script = document.createElement("script");
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.appendChild(script);
+          });
+        }
+        if (window.HIGHTAC_ACCESS_GUARD && window.HIGHTAC_ACCESS_GUARD.loadScripts) {
+          window.HIGHTAC_ACCESS_GUARD.loadScripts(sources);
+        } else {
+          sources.reduce(function (promise, src) {
+            return promise.then(function () { return loadScript(src); });
+          }, Promise.resolve());
+        }
+      })();
+    </script>
   </body>
 </html>
